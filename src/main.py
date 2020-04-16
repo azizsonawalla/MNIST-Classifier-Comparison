@@ -92,65 +92,65 @@ if __name__ == '__main__':
         # Find optimal KNN model
         # ==============================================================================================================
 
-        # print("Running KNN...")
-        #
-        # # Save headings to results csv
-        # save_model_results("KNN", ["K", "Train Error", "Test Error", "Metric"])
-        #
-        # # Define hyperparameter space
-        # k_values = [2**p for p in range(1, 13)]  # k values to test
-        # metrics = ['braycurtis', 'canberra', 'chebyshev', 'cityblock', 'cosine', 'euclidean']  # metrics to test
-        #
-        # # Initialize and fit model
-        # KNN = KNN()
-        # KNN.fit(X, y)
-        #
-        # # for each distance metric
-        # for metric in metrics:
-        #     print("Metric = " + metric)
-        #
-        #     # get cross validation folds
-        #     cv_datasets = build_CV_folds(3, X, y)
-        #
-        #     for this_X, this_y, this_Xtest, this_ytest in cv_datasets:
-        #
-        #         # predicted labels for all k values. y_pred_all_train[i] is predicted labels using k_values[i]
-        #         y_preds_all_train = KNN.predict(this_X, k_values, metric, verbose=1)
-        #         y_preds_all_test = KNN.predict(this_Xtest, k_values, metric, verbose=1)
-        #
-        #         for i in range(0, len(k_values)):
-        #             y_pred_train = y_preds_all_train[i]
-        #             y_pred_test = y_preds_all_test[i]
-        #             k = k_values[i]
-        #
-        #             # calculate scores for this k value, for this fold
-        #             this_train_error = np.mean(y_pred_train != this_y)
-        #             this_test_error = np.mean(y_pred_test != this_ytest)
-        #
-        #             save_model_results("KNN", [str(k), str(this_train_error), str(this_test_error), metric])
+        print("Running KNN...")
+
+        # Save headings to results csv
+        save_model_results("KNN", ["K", "Train Error", "Test Error", "Metric"])
+
+        # Define hyperparameter space
+        k_values = [2**p for p in range(1, 13)]  # k values to test
+        metrics = ['braycurtis', 'canberra', 'chebyshev', 'cityblock', 'cosine', 'euclidean']  # metrics to test
+
+        # Initialize and fit model
+        KNN = KNN()
+        KNN.fit(X, y)
+
+        # for each distance metric
+        for metric in metrics:
+            print("Metric = " + metric)
+
+            # get cross validation folds
+            cv_datasets = build_CV_folds(3, X, y)
+
+            for this_X, this_y, this_Xtest, this_ytest in cv_datasets:
+
+                # predicted labels for all k values. y_pred_all_train[i] is predicted labels using k_values[i]
+                y_preds_all_train = KNN.predict(this_X, k_values, metric, verbose=1)
+                y_preds_all_test = KNN.predict(this_Xtest, k_values, metric, verbose=1)
+
+                for i in range(0, len(k_values)):
+                    y_pred_train = y_preds_all_train[i]
+                    y_pred_test = y_preds_all_test[i]
+                    k = k_values[i]
+
+                    # calculate scores for this k value, for this fold
+                    this_train_error = np.mean(y_pred_train != this_y)
+                    this_test_error = np.mean(y_pred_test != this_ytest)
+
+                    save_model_results("KNN", [str(k), str(this_train_error), str(this_test_error), metric])
 
         # ==============================================================================================================
         # Find optimal Linear Regression model
         # ==============================================================================================================
 
-        print("Running Linear Regression ...")
-
-        # Save headings to results csv
-        # save_model_results("LinearRegression", ["K", "Train Error", "Test Error", "Metric"])
-
-        # Define hyperparameter space
-        # k_values = [2 ** p for p in range(1, 13)]  # k values to test
-        # metrics = ['braycurtis', 'canberra', 'chebyshev', 'cityblock', 'cosine', 'euclidean']  # metrics to test
-
-        # Initialize and fit model
-        lr = LinearRegression('MSE', 1, True, None, 1, 500)
-        lr.fit(X, y)
-        y_pred_train = lr.predict(X, round=True)
-        y_pred_test = lr.predict(X_test, round=True)
-        train_error = np.mean(y_pred_train != y)
-        test_error = np.mean(y_pred_test != ytest)
-
-        print(train_error, test_error)
+        # print("Running Linear Regression ...")
+        #
+        # # Save headings to results csv
+        # # save_model_results("LinearRegression", ["K", "Train Error", "Test Error", "Metric"])
+        #
+        # # Define hyperparameter space
+        # # k_values = [2 ** p for p in range(1, 13)]  # k values to test
+        # # metrics = ['braycurtis', 'canberra', 'chebyshev', 'cityblock', 'cosine', 'euclidean']  # metrics to test
+        #
+        # # Initialize and fit model
+        # lr = LinearRegression('MSE', 1, True, None, 1, 500)
+        # lr.fit(X, y)
+        # y_pred_train = lr.predict(X, round=True)
+        # y_pred_test = lr.predict(X_test, round=True)
+        # train_error = np.mean(y_pred_train != y)
+        # test_error = np.mean(y_pred_test != ytest)
+        #
+        # print(train_error, test_error)
 
 
         # TODO: Implement SVM
