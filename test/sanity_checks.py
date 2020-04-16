@@ -2,6 +2,11 @@
 import argparse
 import os
 import pickle
+import sys
+# add local modules
+sys.path.append(os.path.abspath(os.path.join("..")))
+sys.path.append(os.path.abspath(os.path.join("..", "src")))
+sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
 
 import numpy as np
 
@@ -13,6 +18,7 @@ from src.models.KNN import KNN
 from src.models.LinearRegression import LinearRegression as myLinearRegression
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-m','--models', nargs='+', required=True)
 
