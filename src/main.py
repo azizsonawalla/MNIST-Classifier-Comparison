@@ -1,11 +1,11 @@
 import sys
+import os
 # add local modules
 sys.path.append(os.path.abspath(os.path.join("..")))
 sys.path.append(os.path.abspath(os.path.join("..", "src")))
 sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
 
 import csv
-import os
 import pickle
 import gzip
 import argparse

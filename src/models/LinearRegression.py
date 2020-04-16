@@ -1,3 +1,4 @@
+import os
 import sys
 # add local modules
 sys.path.append(os.path.abspath(os.path.join("..")))
