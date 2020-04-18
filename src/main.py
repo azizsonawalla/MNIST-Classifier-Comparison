@@ -2,7 +2,7 @@ import os
 import sys
 
 # add local modules
-sys.path.append(os.path.abspath(os.path.join("..")))
+sys.path.append(os.path.abspath(os.path.join(".")))
 sys.path.append(os.path.abspath(os.path.join("..", "src")))
 sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
 from src.models.SoftmaxClassifier import SoftmaxClassifier
@@ -18,7 +18,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 
 def load_dataset(filename):
-    with open(os.path.join('..', 'data', filename), 'rb') as f:
+    with open(os.path.join('data', filename), 'rb') as f:
         return pickle.load(f)
 
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
         # Load dataset
         # ==============================================================================================================
 
-        with gzip.open(os.path.join('..', 'data', 'mnist.pkl.gz'), 'rb') as f:
+        with gzip.open(os.path.join('data', 'mnist.pkl.gz'), 'rb') as f:
             train_set, valid_set, test_set = pickle.load(f, encoding="latin1")
         X, y = train_set
 
