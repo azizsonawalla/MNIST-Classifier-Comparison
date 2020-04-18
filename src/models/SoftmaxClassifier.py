@@ -1,5 +1,12 @@
 import numpy as np
 import cupy as cp
+import os
+import sys
+# add local modules
+
+sys.path.append(os.path.abspath(os.path.join("..")))
+sys.path.append(os.path.abspath(os.path.join("..", "src")))
+sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
 
 from src import utils
 
