@@ -1,5 +1,4 @@
 import numpy as np
-import cupy as cp
 import os
 import sys
 # add local modules
@@ -27,33 +26,31 @@ class SoftmaxClassifier:
         k = np.unique(y).size
 
         W = W.reshape(k, d)
-        print("1")
         XWT = X@W.T  # nxk
-        print("2")
         exp_XWT = np.exp(XWT)
-        print("3")
         sum_exp_XWT = np.sum(exp_XWT, axis=1)
-        print("4")
         logSumExp = np.log(sum_exp_XWT)  # nx1
-        print("5")
 
         XWT_matchingOnly = [XWT[i][y[i]] for i in range(0, n)]  # selects entries from XWT where y_i=c
         XWT_matchingOnly = np.array(XWT_matchingOnly).reshape((n, 1))
-        print("6")
 
         # Calculate the function value
-        f = cp.sum(logSumExp - XWT_matchingOnly)
+        f = np.sum(logSumExp - XWT_matchingOnly)
 
         # Calculate the gradient value
         print("Calculating g")
-        g = np.zeros((k, d))
-        for c in range(0, k):
-            for j in range(0, d):
-                for i in range(0, n):
-                    I = 1 if y[i] == c else 0
-                    p = exp_XWT[i][c] / sum_exp_XWT[i]
-                    g[c][j] += X[i][j] * (p - I)
+        # g = np.zeros((k, d))
+        # for c in range(0, k):
+        #     for j in range(0, d):
+        #         for i in range(0, n):
+        #             I = 1 if y[i] == c else 0
+        #             p = exp_XWT[i][c] / sum_exp_XWT[i]
+        #             g[c][j] += X[i][j] * (p - I)
 
+        y_binary = np.zeros((n, k)).astype(bool)
+        y_binary[np.arange(n), y] = 1
+
+        g = (exp_XWT / sum_exp_XWT[:, None] - y_binary).T @ X
         g = g.flatten()
         return f, g
 
