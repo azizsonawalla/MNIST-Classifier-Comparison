@@ -1,6 +1,9 @@
-import sys
 import os
+import sys
+
 # add local modules
+from src.models.SoftmaxClassifier import SoftmaxClassifier
+
 sys.path.append(os.path.abspath(os.path.join("..")))
 sys.path.append(os.path.abspath(os.path.join("..", "src")))
 sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
@@ -12,8 +15,6 @@ import argparse
 
 import numpy as np
 
-from models.LinearRegression import LinearRegression
-from src.models.KNN import KNN
 from sklearn.preprocessing import LabelBinarizer
 
 
@@ -38,16 +39,21 @@ if __name__ == '__main__':
         with gzip.open(os.path.join('..', 'data', 'mnist.pkl.gz'), 'rb') as f:
             train_set, valid_set, test_set = pickle.load(f, encoding="latin1")
         X, y = train_set
+
+        # use subset
+        # subset_size = 20000
+        # idx = np.random.choice(X.shape[0], size=subset_size, replace=False)
+        # X = X[idx]
+        # y = np.reshape(y[idx], (subset_size, 1))
+
         Xvalid, yvalid = valid_set
         Xtest, ytest = test_set
         n, d = X.shape
         t, _ = Xtest.shape
 
-        # cast down to 32 bit to save memory
-        X = X.astype('float32')
-
         binarizer = LabelBinarizer()
         Y = binarizer.fit_transform(y)
+        Ytest = binarizer.fit_transform(ytest)
 
         # ==============================================================================================================
         # Helper Functions
@@ -136,27 +142,20 @@ if __name__ == '__main__':
         #             save_model_results("KNN", [str(k), str(this_train_error), str(this_test_error), metric])
 
         # ==============================================================================================================
-        # Find optimal Linear Regression model
+        # Find optimal Linear Model
         # ==============================================================================================================
 
-        print("Running Linear Regression ...")
+        print("Running Linear Model ...")
 
-        # Save headings to results csv
-        # save_model_results("LinearRegression", ["K", "Train Error", "Test Error", "Metric"])
+        softmax = SoftmaxClassifier(verbose=10, maxEvals=100)
+        softmax.fit(X, y)
 
-        # Define hyperparameter space
-        # k_values = [2 ** p for p in range(1, 13)]  # k values to test
-        # metrics = ['braycurtis', 'canberra', 'chebyshev', 'cityblock', 'cosine', 'euclidean']  # metrics to test
+        print("Training error %.3f" % utils.classification_error(softmax.predict(Xtest), ytest))
+        # print("Validation error %.3f" % utils.classification_error(softmax.predict(Xtest), ytest))
 
-        # Initialize and fit model
-        lr = LinearRegression('MSE', 1, True, None, 1, 500)
-        lr.fit(X, y)
-        y_pred_train = lr.predict(X, round=True)
-        y_pred_test = lr.predict(X_test, round=True)
-        train_error = np.mean(y_pred_train != y)
-        test_error = np.mean(y_pred_test != ytest)
-
-        print(train_error, test_error)
+        # ==============================================================================================================
+        # Find optimal SVM
+        # ==============================================================================================================
 
 
         # TODO: Implement SVM

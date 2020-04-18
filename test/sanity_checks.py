@@ -4,6 +4,7 @@ import os
 import pickle
 import sys
 # add local modules
+
 sys.path.append(os.path.abspath(os.path.join("..")))
 sys.path.append(os.path.abspath(os.path.join("..", "src")))
 sys.path.append(os.path.abspath(os.path.join("..", "src", "models")))
@@ -12,7 +13,7 @@ import numpy as np
 
 # sklearn imports
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LinearRegression as skLinearRegression, Ridge
+from sklearn.linear_model import LinearRegression as skLinearRegression
 
 from src.models.KNN import KNN
 from src.models.LinearRegression import LinearRegression as myLinearRegression

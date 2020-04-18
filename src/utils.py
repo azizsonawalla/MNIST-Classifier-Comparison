@@ -1,6 +1,7 @@
 import numpy as np
-from scipy import stats
 from numpy.linalg import norm
+
+from scipy import stats
 
 
 def euclidean_dist_squared(X, Xtest):
@@ -68,8 +69,7 @@ def findMin(funObj, w, maxEvals, *args, verbose=0):
 
     alpha = 1.
     while True:
-        # Line-search using quadratic interpolation to
-        # find an acceptable value of alpha
+        # Line-search using quadratic interpolation to find an acceptable value of alpha
         gg = g.T.dot(g)
 
         while True:
@@ -77,6 +77,7 @@ def findMin(funObj, w, maxEvals, *args, verbose=0):
             f_new, g_new = funObj(w_new, *args)
 
             funEvals += 1
+
             if f_new <= f - gamma * alpha*gg:
                 break
 
