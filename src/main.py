@@ -41,13 +41,14 @@ if __name__ == '__main__':
             train_set, valid_set, test_set = pickle.load(f, encoding="latin1")
         X, y = train_set
 
+        X = X.astype('float64')
+
         # use subset
         # subset_size = 20000
         # idx = np.random.choice(X.shape[0], size=subset_size, replace=False)
         # X = X[idx]
         # y = np.reshape(y[idx], (subset_size, 1))
 
-        Xvalid, yvalid = valid_set
         Xtest, ytest = test_set
         n, d = X.shape
         t, _ = Xtest.shape
@@ -148,10 +149,15 @@ if __name__ == '__main__':
 
         print("Running Linear Model ...")
 
-        softmax = SoftmaxClassifier(verbose=10, maxEvals=100)
+        data = utils.load_dataset_multi('mnist.pkl.gz')
+        X, y = data['X'], data['y']
+        X = X.astype('float64')
+        Xtest, ytest = data['Xtest'], data['ytest']
+
+        softmax = SoftmaxClassifier(verbose=10, maxEvals=500)
         softmax.fit(X, y)
 
-        print("Training error %.3f" % utils.classification_error(softmax.predict(Xtest), ytest))
+        print("Training error %.3f" % utils.classification_error(softmax.predict(X), y))
         # print("Validation error %.3f" % utils.classification_error(softmax.predict(Xtest), ytest))
 
         # ==============================================================================================================
